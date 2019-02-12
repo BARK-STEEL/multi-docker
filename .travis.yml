@@ -12,7 +12,7 @@ after_success:
   - docker build -t skipteel/multi-client ./client
   - docker build -t skipteel/multi-nginx  ./nginx
   - docker build -t skipteel/multi-server ./server
-  - docker build -t skipteel/nulti-worker ./worker
+  - docker build -t skipteel/multi-worker ./worker
 
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   
