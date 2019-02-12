@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t skipteel/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run skipteel/react-test yarn test --coverage
+
+after_success:
+  - docker build -t skipteel/multi-client ./client
+  - docker build -t skipteel/multi-nginx  ./nginx
+  - docker build -t skipteel/multi-server ./server
+  - docker build -t skipteel/nulti-worker ./worker
+
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  
+  - docker push skipteel/multi-client
+  - docker push skipteel/multi-nginx
+  - docker push skipteel/multi-server
+  - docker push skipteel/multi-worker
